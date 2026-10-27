@@ -98,7 +98,9 @@ while ($round <= $rounds)
   {
     --connect (con$i,localhost,root,,)
     --connection con$i
-    send_eval CALL process_temp_table($end_time);
+    # Keep the query text unchanged while embedded connections read it.
+    eval SET @end_time= $end_time;
+    send CALL process_temp_table(@end_time);
     --inc $i
   }
 
